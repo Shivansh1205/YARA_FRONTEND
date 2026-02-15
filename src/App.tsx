@@ -7,6 +7,7 @@ import { MemoryPanel } from './components/MemoryPanel';
 import { ContextBar } from './components/ContextBar';
 import { WhatsAppModal } from './components/WhatsAppModal';
 import { chatAPI, getUserId, getTimeOfDay } from './api';
+import { getUserLocation, hasLocationPermission } from './utils/geolocation';
 import type { Message, Context, LearningInsights } from './types';
 
 const USER_ID = getUserId();
@@ -27,16 +28,50 @@ function App() {
     const [learningInsights, setLearningInsights] = useState<LearningInsights | null>(null);
     const [context, setContext] = useState<Context>({
         city: '',
+        place: 'unknown',
         time: getTimeOfDay()
     });
+    const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
     // Modals
     const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
 
-    // Load initial memory
+    // Load initial memory and location
     useEffect(() => {
         fetchMemory();
+        loadUserLocation();
     }, []);
+
+    const loadUserLocation = async () => {
+        if (!hasLocationPermission()) return;
+
+        setIsLoadingLocation(true);
+        try {
+            const location = await getUserLocation();
+            setContext(prev => ({
+                ...prev,
+                city: location.city || prev.city,
+                place: location.place || prev.place
+            }));
+
+            if (location.city) {
+                toast.success(`Location detected: ${location.city}`, {
+                    icon: '📍',
+                    duration: 3000,
+                    style: {
+                        borderRadius: '10px',
+                        background: '#1e293b',
+                        color: '#fff',
+                        border: '1px solid #334155'
+                    },
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load location:', error);
+        } finally {
+            setIsLoadingLocation(false);
+        }
+    };
 
     const fetchMemory = async () => {
         try {
