@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+    --color-buddy-dark: #0f172a;
+    --color-buddy-primary: #3b82f6;
+    --color-buddy-accent: #8b5cf6;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
