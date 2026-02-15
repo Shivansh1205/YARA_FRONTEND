@@ -1,7 +1,7 @@
 {
   "name": "yara_frontend",
   "version": "1.0.0",
-  "description": "this the frontend of your pocket buddy",
+  "description": "this the frontend of your pocket YARA",
   "main": "index.js",
   "scripts": {
     "dev": "vite",

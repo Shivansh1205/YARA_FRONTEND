@@ -69,8 +69,8 @@ Open **http://localhost:5173** in your browser
 2. Click Send or press Enter
 3. **Expected**:
    - Typing animation appears
-   - Buddy responds with contextual reply
-   - Mode badge shows (e.g., "chill_companion")
+   - YARA responds with contextual reply
+   - Mode badge shows (e.g., "YARA")
    - Reasoning strip is collapsible
    - Learning toast may appear
 
@@ -124,8 +124,8 @@ Open **http://localhost:5173** in your browser
 **Response**:
 ```json
 {
-  "reply": "Response from Buddy",
-  "mode": "chill_companion",
+  "reply": "Response from YARA",
+  "mode": "YARA",
   "emotion": "anxiety",
   "intensity": 6,
   "relationship": "friend",

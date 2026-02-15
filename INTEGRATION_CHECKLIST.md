@@ -18,7 +18,7 @@ All backend integration is **COMPLETE** and ready to use!
 - **Features**:
   - Sends user message with context (city, place, time)
   - Receives response with mode, emotion, intensity
-  - Displays learning toast when Buddy learns something
+  - Displays learning toast when YARA learns something
   - Graceful error handling
 
 ### 3. WhatsApp Import ✅
@@ -45,7 +45,7 @@ All backend integration is **COMPLETE** and ready to use!
 ```bash
 curl https://yara-0ecr.onrender.com/
 ```
-**Expected**: `Buddy AI running` or similar
+**Expected**: `YARA AI running` or similar
 
 ### Test Chat Endpoint
 ```bash
@@ -80,8 +80,8 @@ npm run dev
 2. Click Send or press Enter
 3. **Expected**:
    - Typing animation appears
-   - Buddy responds with helpful message
-   - Mode badge shows (e.g., "chill_companion")
+   - YARA responds with helpful message
+   - Mode badge shows (e.g., "YARA")
    - Reasoning strip is expandable
    - Possibly a learning toast appears
 
@@ -120,7 +120,7 @@ npm run dev
     ↓
 [Typing animation appears]
     ↓
-[Buddy's response shows]
+[YARA's response shows]
     ↓
 [Mode badge above message]
     ↓
@@ -133,7 +133,7 @@ npm run dev
 ```
 [Network error occurs]
     ↓
-[Toast: "Buddy is having network issues — try again"]
+[Toast: "YARA is having network issues — try again"]
     ↓
 [Chat remains functional]
 ```
@@ -143,8 +143,8 @@ npm run dev
 ### Chat Response
 ```typescript
 {
-  reply: string           // Buddy's message
-  mode: string           // e.g., "chill_companion"
+  reply: string           // YARA's message
+  mode: string           // e.g., "YARA"
   emotion: string        // e.g., "anxiety"
   intensity: number      // 1-10
   relationship: string   // e.g., "friend"

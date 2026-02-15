@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Toaster, toast } from 'react-hot-toast';
 import { Layout } from './components/Layout';
 import { ChatInterface } from './components/ChatInterface';
-import { MemoryPanel } from './components/MemoryPanel';
 import { ContextBar } from './components/ContextBar';
 import { WhatsAppModal } from './components/WhatsAppModal';
 import { chatAPI, getUserId, getTimeOfDay } from './api';
-import type { Message, Context, LearningInsights } from './types';
+import type { Message, Context } from './types';
 
 const USER_ID = getUserId();
 
@@ -16,38 +15,21 @@ function App() {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 'welcome',
-            text: "Hi! I'm Buddy. I can help with social situations, drafting replies, or just venting. What's on your mind?",
-            sender: 'buddy',
+            text: "Hi! I'm YARA. I can help with social situations, drafting replies, or just venting. What's on your mind?",
+            sender: 'YARA',
             timestamp: new Date(),
-            mode: 'chill_companion'
+            mode: 'YARA'
         }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [learningInsights, setLearningInsights] = useState<LearningInsights | null>(null);
     const [context, setContext] = useState<Context>({
         city: '',
-        place: 'unknown',
         time: getTimeOfDay()
     });
 
     // Modals
     const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
-
-    // Load initial memory
-    useEffect(() => {
-        fetchMemory();
-    }, []);
-
-    const fetchMemory = async () => {
-        try {
-            const insights = await chatAPI.getLearningInsights(USER_ID);
-            setLearningInsights(insights);
-        } catch (err) {
-            console.error("Failed to fetch memory", err);
-            // Don't show error to user - it's okay if this fails initially
-        }
-    };
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -68,7 +50,7 @@ function App() {
 
             // Check for backend error
             if (data.error) {
-                toast.error("Buddy is having network issues — try again", {
+                toast.error("YARA is having network issues — try again", {
                     icon: '⚠️',
                     style: {
                         borderRadius: '10px',
@@ -92,13 +74,12 @@ function App() {
                         border: '1px solid #334155'
                     },
                 });
-                fetchMemory(); // Refresh memory panel
             }
 
             const botMsg: Message = {
                 id: uuidv4(),
                 text: data.reply,
-                sender: 'buddy',
+                sender: 'YARA',
                 timestamp: new Date(),
                 mode: data.mode,
                 emotion: data.emotion,
@@ -114,7 +95,7 @@ function App() {
 
         } catch (error) {
             console.error("Error sending message:", error);
-            toast.error("Buddy is having network issues — try again", {
+            toast.error("YARA is having network issues — try again", {
                 icon: '⚠️',
                 style: {
                     borderRadius: '10px',
@@ -129,7 +110,7 @@ function App() {
     };
 
     const handleWhatsAppImport = () => {
-        toast.success("Buddy analyzed your conversation!", {
+        toast.success("YARA analyzed your conversation!", {
             icon: '✅',
             duration: 3000,
             style: {
@@ -139,9 +120,6 @@ function App() {
                 border: '1px solid #334155'
             },
         });
-
-        // Refresh memory after WhatsApp import
-        fetchMemory();
     };
 
     return (
@@ -155,9 +133,6 @@ function App() {
 
             <div className="flex h-full pt-[60px] pb-6">
                 {/* Left Sidebar: Memory */}
-                <div className="hidden md:block h-full shrink-0">
-                    <MemoryPanel insights={learningInsights} />
-                </div>
 
                 {/* Main Chat Area */}
                 <div className="flex-1 h-full min-w-0 relative">

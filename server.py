@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-# Import Buddy AI modules
+# Import YARA AI modules
 try:
     from src.extractors import analyze_social_context
     from src.policy_engine import generate_behavior_policy
@@ -18,11 +18,11 @@ try:
     from src.composer import generate_reply
     from src.whatsapp.parser import parse_whatsapp_chat
 except ImportError as e:
-    print(f"Error importing Buddy AI modules: {e}")
+    print(f"Error importing YARA AI modules: {e}")
     print("Ensure you are running this from YARA_FRONTEND and claudBUD is in ../claudBUD")
     sys.exit(1)
 
-app = FastAPI(title="Buddy AI API")
+app = FastAPI(title="YARA AI API")
 
 # Allow CORS for local development
 app.add_middleware(
@@ -60,7 +60,7 @@ class VerifyRequest(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"status": "online", "system": "Buddy AI"}
+    return {"status": "online", "system": "YARA AI"}
 
 @app.get("/api/chat/learning/{user_id}")
 async def get_user_learning(user_id: str):
@@ -167,7 +167,7 @@ async def chat_endpoint(request: ChatRequest):
         if new_trait and new_trait not in user_traits:
             user_traits.append(new_trait)
             USER_MEMORY[user_id] = user_traits
-            learning_feedback = f"Buddy learned: {new_trait.replace('_', ' ')}"
+            learning_feedback = f"YARA learned: {new_trait.replace('_', ' ')}"
         
         return {
             "response": response_text,
