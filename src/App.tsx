@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Toaster, toast } from 'react-hot-toast';
 import { Layout } from './components/Layout';
 import { ChatInterface } from './components/ChatInterface';
+import { MemoryPanel } from './components/MemoryPanel';
 import { ContextBar } from './components/ContextBar';
 import { WhatsAppModal } from './components/WhatsAppModal';
 import { chatAPI, getUserId, getTimeOfDay } from './api';
-import type { Message, Context } from './types';
+import type { Message, Context, LearningInsights } from './types';
 
 const USER_ID = getUserId();
 
@@ -23,6 +24,7 @@ function App() {
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [learningInsights, setLearningInsights] = useState<LearningInsights | null>(null);
     const [context, setContext] = useState<Context>({
         city: '',
         time: getTimeOfDay()
@@ -30,6 +32,20 @@ function App() {
 
     // Modals
     const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+
+    // Load initial memory
+    useEffect(() => {
+        fetchMemory();
+    }, []);
+
+    const fetchMemory = async () => {
+        try {
+            const insights = await chatAPI.getLearningInsights(USER_ID);
+            setLearningInsights(insights);
+        } catch (err) {
+            console.error("Failed to fetch memory", err);
+        }
+    };
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -74,6 +90,7 @@ function App() {
                         border: '1px solid #334155'
                     },
                 });
+                fetchMemory(); // Refresh memory panel
             }
 
             const botMsg: Message = {
@@ -120,6 +137,9 @@ function App() {
                 border: '1px solid #334155'
             },
         });
+
+        // Refresh memory after WhatsApp import
+        fetchMemory();
     };
 
     return (
@@ -133,6 +153,9 @@ function App() {
 
             <div className="flex h-full pt-[60px] pb-6">
                 {/* Left Sidebar: Memory */}
+                <div className="hidden md:block h-full shrink-0">
+                    <MemoryPanel insights={learningInsights} />
+                </div>
 
                 {/* Main Chat Area */}
                 <div className="flex-1 h-full min-w-0 relative">
