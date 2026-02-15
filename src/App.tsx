@@ -16,10 +16,10 @@ function App() {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 'welcome',
-            text: "Hi! I'm Buddy. I can help with social situations, drafting replies, or just venting. What's on your mind?",
-            sender: 'buddy',
+            text: "Hi! I'm YARA. I can help with social situations, drafting replies, or just venting. What's on your mind?",
+            sender: 'YARA',
             timestamp: new Date(),
-            mode: 'chill_companion'
+            mode: 'YARA'
         }
     ]);
     const [input, setInput] = useState('');
@@ -27,7 +27,6 @@ function App() {
     const [learningInsights, setLearningInsights] = useState<LearningInsights | null>(null);
     const [context, setContext] = useState<Context>({
         city: '',
-        place: 'unknown',
         time: getTimeOfDay()
     });
 
@@ -45,7 +44,6 @@ function App() {
             setLearningInsights(insights);
         } catch (err) {
             console.error("Failed to fetch memory", err);
-            // Don't show error to user - it's okay if this fails initially
         }
     };
 
@@ -68,7 +66,7 @@ function App() {
 
             // Check for backend error
             if (data.error) {
-                toast.error("Buddy is having network issues — try again", {
+                toast.error("YARA is having network issues — try again", {
                     icon: '⚠️',
                     style: {
                         borderRadius: '10px',
@@ -98,7 +96,7 @@ function App() {
             const botMsg: Message = {
                 id: uuidv4(),
                 text: data.reply,
-                sender: 'buddy',
+                sender: 'YARA',
                 timestamp: new Date(),
                 mode: data.mode,
                 emotion: data.emotion,
@@ -114,7 +112,7 @@ function App() {
 
         } catch (error) {
             console.error("Error sending message:", error);
-            toast.error("Buddy is having network issues — try again", {
+            toast.error("YARA is having network issues — try again", {
                 icon: '⚠️',
                 style: {
                     borderRadius: '10px',
@@ -129,7 +127,7 @@ function App() {
     };
 
     const handleWhatsAppImport = () => {
-        toast.success("Buddy analyzed your conversation!", {
+        toast.success("YARA analyzed your conversation!", {
             icon: '✅',
             duration: 3000,
             style: {

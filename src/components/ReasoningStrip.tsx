@@ -17,7 +17,7 @@ export const ReasoningStrip: React.FC<ReasoningStripProps> = ({ reasoning }) => 
                 className="flex items-center space-x-2 text-[10px] uppercase tracking-wider text-slate-500 hover:text-indigo-400 transition-colors bg-slate-900/40 px-2 py-1 rounded-md border border-white/5"
             >
                 <Sparkles className="w-3 h-3" />
-                <span>Buddy's Reasoning</span>
+                <span>YARA's Reasoning</span>
                 {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
             </button>
 

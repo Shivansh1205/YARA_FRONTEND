@@ -14,10 +14,10 @@ export const api = axios.create({
 
 // User ID Management
 export const getUserId = (): string => {
-    let userId = localStorage.getItem('buddy_user_id');
+    let userId = localStorage.getItem('YARA_user_id');
     if (!userId) {
         userId = `user_${uuidv4()}`;
-        localStorage.setItem('buddy_user_id', userId);
+        localStorage.setItem('YARA_user_id', userId);
     }
     return userId;
 };
@@ -34,7 +34,7 @@ export const getTimeOfDay = (): string => {
 // API Functions
 export const chatAPI = {
     /**
-     * Send a chat message to Buddy
+     * Send a chat message to YARA
      */
     sendMessage: async (userId: string, message: string, meta?: Context): Promise<ChatResponse> => {
         const response = await api.post<ChatResponse>('/chat', {

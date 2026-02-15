@@ -20,7 +20,6 @@ export interface Knowledge {
 
 export interface Context {
     city?: string;
-    place?: string;
     time?: string;
 }
 
@@ -40,7 +39,7 @@ export interface DebugData {
 export interface Message {
     id: string;
     text: string;
-    sender: 'user' | 'buddy';
+    sender: 'user' | 'YARA';
     timestamp: Date;
     mode?: string; // e.g. "diplomatic_advisor"
     reasoning?: Reasoning;

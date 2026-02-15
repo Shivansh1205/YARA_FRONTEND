@@ -39,7 +39,7 @@ See `src/api.ts` for implementation details.
 3. Click Send
 4. You should see:
    - Typing indicator (3 dots)
-   - Buddy's response with mode badge
+   - YARA's response with mode badge
    - Reasoning strip (expandable)
    - Learning toast (if applicable)
 
@@ -67,12 +67,12 @@ See `src/api.ts` for implementation details.
 ### Chat Response
 ```json
 {
-  "reply": "The actual message from Buddy",
-  "mode": "chill_companion | diplomatic_advisor | expert_consultant",
+  "reply": "The actual message from YARA",
+  "mode": "YARA | diplomatic_advisor | expert_consultant",
   "emotion": "joy | anxiety | frustration | calm",
   "intensity": 1-10,
   "relationship": "friend | colleague | family",
-  "learning": "What Buddy learned (optional)",
+  "learning": "What YARA learned (optional)",
   "error": null or "error message"
 }
 ```
@@ -83,7 +83,7 @@ See `src/api.ts` for implementation details.
   "total_interactions": 5,
   "common_scenarios": ["work_stress", "social_anxiety"],
   "common_emotions": ["anxiety", "calm"],
-  "preferred_modes": ["chill_companion"],
+  "preferred_modes": ["YARA"],
   "adaptations_learned": [
     "User prefers brief responses",
     "Responds well to humor"
@@ -117,7 +117,7 @@ See `src/api.ts` for implementation details.
 
 The frontend handles errors gracefully:
 
-1. **Network Errors**: Shows "Buddy is having network issues — try again"
+1. **Network Errors**: Shows "YARA is having network issues — try again"
 2. **Backend Errors**: Displays error from `response.error` field
 3. **No Crash**: UI remains functional even if API calls fail
 
@@ -191,5 +191,5 @@ For backend issues, check:
 
 ## 🎉 You're Ready!
 
-The frontend is fully integrated with the backend. Just run `npm run dev` and start chatting with Buddy!
+The frontend is fully integrated with the backend. Just run `npm run dev` and start chatting with YARA!
 

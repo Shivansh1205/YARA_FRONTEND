@@ -63,11 +63,11 @@ Send a normal user message with optional context metadata.
 ```json
 {
   "reply": "Arre yaar Bangalore traffic + station combo 😭",
-  "mode": "chill_companion",
+  "mode": "YARA",
   "emotion": "frustration",
   "intensity": 6,
   "relationship": "friend",
-  "learning": "Buddy learned you prefer concise replies",
+  "learning": "YARA learned you prefer concise replies",
   "error": null
 }
 ```
@@ -98,7 +98,7 @@ Paste exported WhatsApp chat for conversation analysis.
 Same format as `/chat` endpoint
 
 #### Frontend Behavior
-- Show "Buddy analyzed your conversation" before displaying reply
+- Show "YARA analyzed your conversation" before displaying reply
 - Refresh memory panel after successful import
 
 ### 3. Learning Insights (Memory Panel)
@@ -119,7 +119,7 @@ GET /chat/learning/user_abc123
   "common_emotions": ["anxiety"],
   "preferred_modes": ["diplomatic_advisor"],
   "adaptations_learned": [
-    "Buddy learned you prefer diplomatic approaches"
+    "YARA learned you prefer diplomatic approaches"
   ]
 }
 ```
@@ -137,7 +137,7 @@ After sending message:
 - Wait for response before re-enabling
 
 ### 2. Display Order
-For each Buddy reply, render in this order:
+For each YARA reply, render in this order:
 1. Mode badge (above message)
 2. Reply message bubble
 3. Emotion strip (collapsible reasoning panel)
@@ -145,7 +145,7 @@ For each Buddy reply, render in this order:
 
 ### 3. Error Handling
 If `error !== null` in response:
-- Show error message: "Buddy is having network issues — try again"
+- Show error message: "YARA is having network issues — try again"
 - Do NOT crash the UI
 - Log error to console for debugging
 
@@ -161,7 +161,7 @@ If user doesn't provide context, use these defaults:
 ```bash
 curl https://yara-0ecr.onrender.com/
 ```
-Should return: `Buddy AI running`
+Should return: `YARA AI running`
 
 ### Test Chat Endpoint
 ```bash
@@ -169,7 +169,7 @@ curl -X POST https://yara-0ecr.onrender.com/chat \
   -H "Content-Type: application/json" \
   -d '{
     "user_id": "test_user",
-    "message": "Hi buddy!",
+    "message": "Hi YARA!",
     "meta": {
       "city": "Mumbai",
       "place": "home",

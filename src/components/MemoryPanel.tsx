@@ -20,7 +20,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
             {!hasData ? (
                 <div className="flex-1 flex flex-col items-center justify-center text-slate-500 space-y-3 opacity-60">
                     <Sparkles className="w-8 h-8 animate-pulse" />
-                    <p className="text-sm text-center px-4">Buddy is learning about you...</p>
+                    <p className="text-sm text-center px-4">YARA is learning about you...</p>
                 </div>
             ) : (
                 <div className="space-y-4 overflow-y-auto custom-scrollbar flex-1">

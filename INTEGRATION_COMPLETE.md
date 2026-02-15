@@ -61,7 +61,7 @@ User sends message
     ↓
 Backend responds with:
   - reply (YARA's message)
-  - mode (e.g., "chill_companion")
+  - mode (e.g., "YARA")
   - emotion (e.g., "anxiety")
   - intensity (1-10)
   - relationship (e.g., "friend")
@@ -157,7 +157,7 @@ npm run dev
 ✅ Learning feedback system
 ✅ Memory panel with insights
 ✅ WhatsApp conversation analysis
-✅ Mode badges (chill_companion, diplomatic_advisor, etc.)
+✅ Mode badges (YARA, diplomatic_advisor, etc.)
 ✅ Reasoning strips showing YARA's thought process
 ✅ Error handling with user-friendly messages
 ✅ Toast notifications for learning updates
@@ -228,7 +228,7 @@ dist/assets/index-BqrVSQgN.js   344.55 kB │ gzip: 113.66 kB
 
 ### Mode Badge
 - Displays above each YARA message
-- Shows current mode (chill_companion, diplomatic_advisor, etc.)
+- Shows current mode (YARA, diplomatic_advisor, etc.)
 
 ### Reasoning Strip
 - Collapsible panel

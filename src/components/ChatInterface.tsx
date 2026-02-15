@@ -55,8 +55,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                             transition={{ duration: 0.3 }}
                             className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}
                         >
-                            {/* Buddy Mode Badge */}
-                            {msg.sender === 'buddy' && msg.mode && (
+                            {/* YARA Mode Badge */}
+                            {msg.sender === 'YARA' && msg.mode && (
                                 <ModeBadge mode={msg.mode} />
                             )}
 
@@ -76,7 +76,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
 
-                                {msg.sender === 'buddy' && msg.reasoning && (
+                                {msg.sender === 'YARA' && msg.reasoning && (
                                     <ReasoningStrip reasoning={msg.reasoning} />
                                 )}
                             </div>
@@ -95,7 +95,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                             <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                             <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                         </div>
-                        <span className="text-[10px] text-slate-500 mt-1 ml-1">Buddy is thinking...</span>
+                        <span className="text-[10px] text-slate-500 mt-1 ml-1">YARA is thinking...</span>
                     </motion.div>
                 )}
                 <div ref={messagesEndRef} />
@@ -136,7 +136,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     </button>
                 </div>
                 <div className="text-center mt-2 text-[10px] text-slate-600 font-mono tracking-wider uppercase">
-                    Buddy AI System v2.0 • Neural Link Active
+                    YARA AI System v2.0 • Neural Link Active
                 </div>
             </div>
         </div>
