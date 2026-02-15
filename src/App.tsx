@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Toaster, toast } from 'react-hot-toast';
 import { Layout } from './components/Layout';
@@ -7,14 +6,10 @@ import { ChatInterface } from './components/ChatInterface';
 import { MemoryPanel } from './components/MemoryPanel';
 import { ContextBar } from './components/ContextBar';
 import { WhatsAppModal } from './components/WhatsAppModal';
-import type { Message, Context } from './types';
+import { chatAPI, getUserId, getTimeOfDay } from './api';
+import type { Message, Context, LearningInsights } from './types';
 
-// API Setup
-const api = axios.create({
-    baseURL: 'http://localhost:8001/api',
-});
-
-const USER_ID = "demo_user_123";
+const USER_ID = getUserId();
 
 function App() {
     // State
@@ -29,11 +24,11 @@ function App() {
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [traits, setTraits] = useState<string[]>([]);
+    const [learningInsights, setLearningInsights] = useState<LearningInsights | null>(null);
     const [context, setContext] = useState<Context>({
-        city: 'Mumbai',
-        place: 'Home',
-        time: 'Evening'
+        city: '',
+        place: 'unknown',
+        time: getTimeOfDay()
     });
 
     // Modals
@@ -46,10 +41,11 @@ function App() {
 
     const fetchMemory = async () => {
         try {
-            const res = await api.get(`/chat/learning/${USER_ID}`);
-            setTraits(res.data.learned_traits);
+            const insights = await chatAPI.getLearningInsights(USER_ID);
+            setLearningInsights(insights);
         } catch (err) {
             console.error("Failed to fetch memory", err);
+            // Don't show error to user - it's okay if this fails initially
         }
     };
 
@@ -68,18 +64,27 @@ function App() {
         setIsLoading(true);
 
         try {
-            const response = await api.post('/chat', {
-                message: userMsg.text,
-                user_id: USER_ID,
-                meta: context
-            });
+            const data = await chatAPI.sendMessage(USER_ID, userMsg.text, context);
 
-            const { response: botText, reasoning, debug, learning_feedback } = response.data;
+            // Check for backend error
+            if (data.error) {
+                toast.error("Buddy is having network issues — try again", {
+                    icon: '⚠️',
+                    style: {
+                        borderRadius: '10px',
+                        background: '#1e293b',
+                        color: '#fff',
+                        border: '1px solid #334155'
+                    },
+                });
+                return;
+            }
 
             // Handle Learning Feedback
-            if (learning_feedback) {
-                toast.success(learning_feedback, {
+            if (data.learning) {
+                toast.success(data.learning, {
                     icon: '🧠',
+                    duration: 4000,
                     style: {
                         borderRadius: '10px',
                         background: '#1e293b',
@@ -92,29 +97,41 @@ function App() {
 
             const botMsg: Message = {
                 id: uuidv4(),
-                text: botText,
+                text: data.reply,
                 sender: 'buddy',
                 timestamp: new Date(),
-                mode: debug?.policy?.mode,
-                reasoning: reasoning,
-                debug: debug
+                mode: data.mode,
+                emotion: data.emotion,
+                intensity: data.intensity,
+                reasoning: {
+                    understood: data.emotion,
+                    risk: data.relationship,
+                    strategy: data.mode
+                }
             };
 
             setMessages(prev => [...prev, botMsg]);
 
         } catch (error) {
             console.error("Error sending message:", error);
-            toast.error("Couldn't reach Buddy's brain. Is the server running?");
+            toast.error("Buddy is having network issues — try again", {
+                icon: '⚠️',
+                style: {
+                    borderRadius: '10px',
+                    background: '#1e293b',
+                    color: '#fff',
+                    border: '1px solid #334155'
+                },
+            });
         } finally {
             setIsLoading(false);
         }
     };
 
     const handleWhatsAppImport = () => {
-        // Add a system or invisible message to context?
-        // Or just let user know analysis is done
-        toast.success("WhatsApp chat analyzed! Buddy now has more context.", {
+        toast.success("Buddy analyzed your conversation!", {
             icon: '✅',
+            duration: 3000,
             style: {
                 borderRadius: '10px',
                 background: '#1e293b',
@@ -123,7 +140,7 @@ function App() {
             },
         });
 
-        // Optionally trigger a refresh of memory if the analysis endpoint updated it
+        // Refresh memory after WhatsApp import
         fetchMemory();
     };
 
@@ -139,7 +156,7 @@ function App() {
             <div className="flex h-full pt-[60px] pb-6">
                 {/* Left Sidebar: Memory */}
                 <div className="hidden md:block h-full shrink-0">
-                    <MemoryPanel traits={traits} />
+                    <MemoryPanel insights={learningInsights} />
                 </div>
 
                 {/* Main Chat Area */}
@@ -160,9 +177,11 @@ function App() {
                 isOpen={isWhatsAppModalOpen}
                 onClose={() => setIsWhatsAppModalOpen(false)}
                 onImport={handleWhatsAppImport}
+                userId={USER_ID}
             />
         </Layout>
     );
 }
 
 export default App;
+

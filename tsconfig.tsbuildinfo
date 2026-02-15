@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/components/AnalysisPanel.tsx","./src/components/ChatInterface.tsx","./src/components/ContextBar.tsx","./src/components/Layout.tsx","./src/components/MemoryPanel.tsx","./src/components/ModeBadge.tsx","./src/components/ReasoningStrip.tsx","./src/components/WhatsAppModal.tsx"],"version":"5.9.3"}

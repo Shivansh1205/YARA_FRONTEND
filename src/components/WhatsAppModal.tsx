@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Upload, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import axios from 'axios';
+import { chatAPI } from '../api';
 
 interface WhatsAppModalProps {
     isOpen: boolean;
     onClose: () => void;
     onImport: () => void;
+    userId: string;
 }
 
-export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, onImport }) => {
+export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, onImport, userId }) => {
     const [text, setText] = useState('');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -21,15 +22,15 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({ isOpen, onClose, o
         setError(null);
 
         try {
-            const response = await axios.post('http://localhost:8001/api/chat/whatsapp', {
-                chat_export: text,
-                user_id: 'default_user'
-            });
+            const response = await chatAPI.importWhatsAppChat(userId, text);
 
-            if (response.data.status === 'success') {
+            // Check if response was successful
+            if (response && response.reply) {
                 onImport();
                 onClose();
                 setText('');
+            } else if (response.error) {
+                setError(response.error);
             }
         } catch (err) {
             setError("Failed to analyze chat. Please try again.");

@@ -19,9 +19,9 @@ export interface Knowledge {
 }
 
 export interface Context {
-    city: string;
-    place: string;
-    time: string;
+    city?: string;
+    place?: string;
+    time?: string;
 }
 
 export interface Reasoning {
@@ -45,4 +45,25 @@ export interface Message {
     mode?: string; // e.g. "diplomatic_advisor"
     reasoning?: Reasoning;
     debug?: DebugData;
+    emotion?: string;
+    intensity?: number;
+}
+
+// New API response types
+export interface ChatResponse {
+    reply: string;
+    mode: string;
+    emotion: string;
+    intensity: number;
+    relationship: string;
+    learning: string | null;
+    error: string | null;
+}
+
+export interface LearningInsights {
+    total_interactions: number;
+    common_scenarios: string[];
+    common_emotions: string[];
+    preferred_modes: string[];
+    adaptations_learned: string[];
 }
