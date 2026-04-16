@@ -9,6 +9,10 @@ interface MemoryPanelProps {
 
 export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
     const hasData = insights && insights.total_interactions > 0;
+    const preferredModes = insights?.preferred_modes ?? [];
+    const commonEmotions = insights?.common_emotions ?? [];
+    const commonScenarios = insights?.common_scenarios ?? [];
+    const adaptationsLearned = insights?.adaptations_learned ?? [];
 
     return (
         <div className="h-full flex flex-col bg-slate-900/60 border-r border-white/5 p-4 w-64 backdrop-blur-md">
@@ -31,7 +35,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                     </div>
 
                     {/* Preferred Modes */}
-                    {insights.preferred_modes.length > 0 && (
+                    {preferredModes.length > 0 && (
                         <div>
                             <div className="flex items-center space-x-1 mb-2">
                                 <Target className="w-3.5 h-3.5 text-cyan-400" />
@@ -39,7 +43,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                             </div>
                             <div className="space-y-1.5">
                                 <AnimatePresence>
-                                    {insights.preferred_modes.map((mode, index) => (
+                                    {preferredModes.map((mode, index) => (
                                         <motion.div
                                             key={mode}
                                             initial={{ opacity: 0, x: -10 }}
@@ -57,7 +61,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                     )}
 
                     {/* Common Emotions */}
-                    {insights.common_emotions.length > 0 && (
+                    {commonEmotions.length > 0 && (
                         <div>
                             <div className="flex items-center space-x-1 mb-2">
                                 <Heart className="w-3.5 h-3.5 text-rose-400" />
@@ -65,7 +69,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                             </div>
                             <div className="space-y-1.5">
                                 <AnimatePresence>
-                                    {insights.common_emotions.map((emotion, index) => (
+                                    {commonEmotions.map((emotion, index) => (
                                         <motion.div
                                             key={emotion}
                                             initial={{ opacity: 0, x: -10 }}
@@ -83,7 +87,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                     )}
 
                     {/* Common Scenarios */}
-                    {insights.common_scenarios.length > 0 && (
+                    {commonScenarios.length > 0 && (
                         <div>
                             <div className="flex items-center space-x-1 mb-2">
                                 <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
@@ -91,7 +95,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                             </div>
                             <div className="space-y-1.5">
                                 <AnimatePresence>
-                                    {insights.common_scenarios.map((scenario, index) => (
+                                    {commonScenarios.map((scenario, index) => (
                                         <motion.div
                                             key={scenario}
                                             initial={{ opacity: 0, x: -10 }}
@@ -109,7 +113,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                     )}
 
                     {/* Adaptations Learned */}
-                    {insights.adaptations_learned.length > 0 && (
+                    {adaptationsLearned.length > 0 && (
                         <div>
                             <div className="flex items-center space-x-1 mb-2">
                                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -117,7 +121,7 @@ export const MemoryPanel: React.FC<MemoryPanelProps> = ({ insights }) => {
                             </div>
                             <div className="space-y-1.5">
                                 <AnimatePresence>
-                                    {insights.adaptations_learned.map((adaptation, index) => (
+                                    {adaptationsLearned.map((adaptation, index) => (
                                         <motion.div
                                             key={adaptation}
                                             initial={{ opacity: 0, x: -10 }}

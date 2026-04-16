@@ -2,6 +2,14 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import type { ChatResponse, LearningInsights, Context } from './types';
 
+const normalizeLearningInsights = (data: Partial<LearningInsights> | null | undefined): LearningInsights => ({
+    total_interactions: data?.total_interactions ?? 0,
+    common_scenarios: Array.isArray(data?.common_scenarios) ? data.common_scenarios : [],
+    common_emotions: Array.isArray(data?.common_emotions) ? data.common_emotions : [],
+    preferred_modes: Array.isArray(data?.preferred_modes) ? data.preferred_modes : [],
+    adaptations_learned: Array.isArray(data?.adaptations_learned) ? data.adaptations_learned : [],
+});
+
 // API Configuration
 export const API_BASE_URL = 'https://yara-0ecr.onrender.com';
 
@@ -65,7 +73,7 @@ export const chatAPI = {
      */
     getLearningInsights: async (userId: string): Promise<LearningInsights> => {
         const response = await api.get<LearningInsights>(`/chat/learning/${userId}`);
-        return response.data;
+        return normalizeLearningInsights(response.data);
     },
 
     /**

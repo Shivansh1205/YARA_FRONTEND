@@ -20,6 +20,7 @@ export interface Knowledge {
 
 export interface Context {
     city?: string;
+    place?: string;
     time?: string;
 }
 

@@ -7,6 +7,24 @@ export interface GeolocationData {
     longitude?: number;
 }
 
+interface ReverseGeocodeAddress {
+    city?: string;
+    town?: string;
+    village?: string;
+    state?: string;
+    amenity?: string;
+    building?: string;
+    road?: string;
+    aeroway?: string;
+    railway?: string;
+    leisure?: string;
+    house_number?: string;
+}
+
+interface ReverseGeocodeResponse {
+    address?: ReverseGeocodeAddress;
+}
+
 /**
  * Get user's location using browser Geolocation API
  */
@@ -23,17 +41,14 @@ export const getUserLocation = async (): Promise<GeolocationData> => {
                 const { latitude, longitude } = position.coords;
 
                 try {
-                    // Reverse geocoding using OpenStreetMap Nominatim (free)
-                    const response = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-                    );
-                    const data = await response.json();
+                    const data = await reverseGeocode(latitude, longitude);
 
-                    const city = data.address?.city ||
-                                data.address?.town ||
-                                data.address?.village ||
-                                data.address?.state ||
-                                '';
+                    const city =
+                        data.address?.city ||
+                        data.address?.town ||
+                        data.address?.village ||
+                        data.address?.state ||
+                        '';
 
                     const place = determinePlace(data.address);
 
@@ -66,10 +81,28 @@ export const getUserLocation = async (): Promise<GeolocationData> => {
     });
 };
 
+const reverseGeocode = async (latitude: number, longitude: number): Promise<ReverseGeocodeResponse> => {
+    const params = new URLSearchParams({
+        format: 'json',
+        lat: String(latitude),
+        lon: String(longitude),
+    });
+
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params.toString()}`);
+    if (!response.ok) {
+        throw new Error(`Reverse geocode request failed with status ${response.status}`);
+    }
+
+    const data = (await response.json()) as ReverseGeocodeResponse;
+    return data ?? {};
+};
+
 /**
  * Determine place type from address data
  */
-const determinePlace = (address: any): string => {
+const determinePlace = (address?: ReverseGeocodeAddress): string => {
+    if (!address) return 'unknown';
+
     // Check for specific amenities
     if (address.amenity) {
         const amenity = address.amenity.toLowerCase();

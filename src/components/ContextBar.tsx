@@ -1,10 +1,11 @@
 import React from 'react';
 import { MapPin, Clock } from 'lucide-react';
 import type { Context } from '../types';
+import { getUserLocation } from '../utils/geolocation';
 
 interface ContextBarProps {
     context: Context;
-    setContext: (ctx: Context) => void;
+    setContext: React.Dispatch<React.SetStateAction<Context>>;
 }
 
 export const ContextBar: React.FC<ContextBarProps> = ({ context, setContext }) => {
@@ -14,37 +15,31 @@ export const ContextBar: React.FC<ContextBarProps> = ({ context, setContext }) =
         const updateTime = () => {
             const now = new Date();
             const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            setContext({ ...context, time: timeString });
+            setContext((prev) => ({ ...prev, time: timeString }));
         };
 
         updateTime(); // Initial set
         const interval = setInterval(updateTime, 60000); // Update every minute
         return () => clearInterval(interval);
-    }, []);
+    }, [setContext]);
 
     const handleGPS = () => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const { latitude, longitude } = position.coords;
-                // Simple reverse geocoding using OpenStreetMap (Free, no key)
-                try {
-                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                    const data = await response.json();
-                    const city = data.address.city || data.address.town || data.address.village || "Unknown Location";
-                    setContext({ ...context, city: city });
-                } catch (error) {
-                    console.error("GPS Error:", error);
-                    setContext({ ...context, city: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}` });
-                }
-            }, (error) => {
-                console.error("Geolocation not allowed or failed", error);
-                setContext({ ...context, city: "Location Denied" });
+        getUserLocation()
+            .then((location) => {
+                setContext((prev) => ({
+                    ...prev,
+                    city: location.city || 'Unknown Location',
+                    place: location.place || 'unknown',
+                }));
+            })
+            .catch((error) => {
+                console.error('GPS Error:', error);
+                setContext((prev) => ({ ...prev, city: 'Location Unavailable' }));
             });
-        }
     };
 
     const handleChange = (key: keyof Context, value: string) => {
-        setContext({ ...context, [key]: value });
+        setContext((prev) => ({ ...prev, [key]: value }));
     };
 
     return (
